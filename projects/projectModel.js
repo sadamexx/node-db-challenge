@@ -2,6 +2,7 @@ const db = require('../data/db-config.js');
 
 module.exports = {
     add,
+    addTask,
     find,
     findById,
     findResources,
@@ -17,11 +18,13 @@ function add(project){
 };
 
 //adds a task to a project
-function addTask(newTask, proj_id){
+function addTask(newTask){
     return db('tasks')
-    .join('projects', "projects.id", 'tasks.project_id')
-    .where('project_id', proj_id)
-    .insert(newTask, 'id')
+    .insert(newTask)
+    .then(ids => {
+        const[id] =ids;
+        return findTasks(id)
+    })
 };
 
 //finds all projects
@@ -46,11 +49,11 @@ function findTasks(id){
 };
 
 //finds all resources of a project by projectID
-function findResources(id){
+function findResources(project_id){
     return db('resources')
     .join('proj_res as pr', "pr.resource_id", "resources.id")
-    .select('resources.name',  'resources.id')
-    .where({id})
+    .select('resources.name',  'resources.id', 'pr.project_id')
+    .where({project_id})
 };
 
 //deletes a project by id

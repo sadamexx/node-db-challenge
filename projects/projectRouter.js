@@ -19,22 +19,15 @@ router.post('/', (req, res) => {
 //C == creates new task by project id
 router.post('/:id/tasks', (req, res) => {
     const newTask = req.body;
-    const proj_id = req.params.id;
+   
 
-    projects.findById(proj_id)
-    .then(pro => {
-        if(pro){
-            projects.addTask(newTask, id)
-            .then(a => {
-                res.status(201).json(a)
+    projects.addTask(newTask)
+            .then(task => {
+                res.status(201).json(task)
             })
-        } else {
-            res.status(404).json({message: "Cannot locate project by specified ID"});
-        }
-    })
-    .catch(error => {
-        res.status(500).json({message: "Error occurred while processing project data"});
-    });
+            .catch(error => {
+                res.status(500).json({message: "Error occurred while processing project data"});
+            });
 });
 
 //R ==gets all projects
