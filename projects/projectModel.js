@@ -11,18 +11,21 @@ module.exports = {
 };
 
 //adds a project
-function add(){
-    return
+function add(project){
+    return db('projects')
+    .insert(project, 'id')
 };
 
 //finds all projects
 function find(){
-    return
+    return db('projects');
 };
 
 //finds project by id
-function findById(id){
-    return
+function findById(id){    
+    return db('projects')
+    .where({ id })
+    .first();
 };
 
 //finds all tasks of a project by projectID
@@ -37,10 +40,14 @@ function findResources(id){
 
 //deletes a project by id
 function remove(id){
-    return
+    return db('projects')
+    .where({ id })
+    .del();
 };
 
 //updates a project by id
 function update(changes, id){
-    return
+    return db('projects')
+    .where ({ id })
+    .update(changes);
 };
