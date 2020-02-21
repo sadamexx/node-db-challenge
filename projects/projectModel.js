@@ -20,11 +20,7 @@ function add(project){
 //adds a task to a project
 function addTask(newTask){
     return db('tasks')
-    .insert(newTask)
-    .then(ids => {
-        const[id] =ids;
-        return findTasks(id)
-    })
+    .insert(newTask, 'id')
 };
 
 //finds all projects
