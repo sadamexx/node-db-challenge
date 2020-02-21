@@ -16,6 +16,14 @@ function add(project){
     .insert(project, 'id')
 };
 
+//adds a task to a project
+function addTask(newTask, proj_id){
+    return db('tasks')
+    .join('projects', "projects.id", 'tasks.project_id')
+    .where('project_id', proj_id)
+    .insert(newTask, 'id')
+};
+
 //finds all projects
 function find(){
     return db('projects');
@@ -30,12 +38,19 @@ function findById(id){
 
 //finds all tasks of a project by projectID
 function findTasks(id){
-    return
+    return db('tasks')
+    .join('projects', 'projects.id', 'tasks.project_id')
+    .select('tasks.task_number', 'tasks.description as task_description', 'tasks.notes as task_note', 'tasks.completed', "projects.name as project_name", "projects.description as project_description")
+    .where('project_id', id)
+    .orderBy('task_number', 'asc')
 };
 
 //finds all resources of a project by projectID
 function findResources(id){
-    return
+    return db('resources')
+    .join('proj_res as pr', "pr.resource_id", "resources.id")
+    .select('resources.name',  'resources.id')
+    .where({id})
 };
 
 //deletes a project by id
